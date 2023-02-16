@@ -1,24 +1,16 @@
-import { getLocationHref } from '../main';
-import {
-  createElementID,
-  getExpressionsPlugin,
-} from '../utils/common';
-import {
-  extendPrototype,
-} from '../utils/functionExtensions';
-import {
-  createSizedArray,
-} from '../utils/helpers/arrays';
-import createNS from '../utils/helpers/svg_elements';
-import BaseRenderer from './BaseRenderer';
-import IImageElement from '../elements/ImageElement';
-import SVGShapeElement from '../elements/svgElements/SVGShapeElement';
-import SVGTextLottieElement from '../elements/svgElements/SVGTextElement'; // eslint-disable-line import/no-cycle
-import ISolidElement from '../elements/SolidElement';
-import NullElement from '../elements/NullElement';
+import IImageElement from "../elements/ImageElement";
+import NullElement from "../elements/NullElement";
+import ISolidElement from "../elements/SolidElement";
+import SVGShapeElement from "../elements/svgElements/SVGShapeElement";
+import SVGTextLottieElement from "../elements/svgElements/SVGTextElement"; // eslint-disable-line import/no-cycle
+import { getLocationHref } from "../main";
+import { createElementID, getExpressionsPlugin } from "../utils/common";
+import { extendPrototype } from "../utils/functionExtensions";
+import { createSizedArray } from "../utils/helpers/arrays";
+import createNS from "../utils/helpers/svg_elements";
+import BaseRenderer from "./BaseRenderer";
 
-function SVGRendererBase() {
-}
+function SVGRendererBase() {}
 
 extendPrototype([BaseRenderer], SVGRendererBase);
 
@@ -43,38 +35,45 @@ SVGRendererBase.prototype.createSolid = function (data) {
 };
 
 SVGRendererBase.prototype.configAnimation = function (animData) {
-  this.svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-  this.svgElement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  this.svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  this.svgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
   if (this.renderConfig.viewBoxSize) {
-    this.svgElement.setAttribute('viewBox', this.renderConfig.viewBoxSize);
+    this.svgElement.setAttribute("viewBox", this.renderConfig.viewBoxSize);
   } else {
-    this.svgElement.setAttribute('viewBox', '0 0 ' + animData.w + ' ' + animData.h);
+    this.svgElement.setAttribute(
+      "viewBox",
+      "0 0 " + animData.w + " " + animData.h
+    );
   }
 
   if (!this.renderConfig.viewBoxOnly) {
-    this.svgElement.setAttribute('width', animData.w);
-    this.svgElement.setAttribute('height', animData.h);
-    this.svgElement.style.width = '100%';
-    this.svgElement.style.height = '100%';
-    this.svgElement.style.transform = 'translate3d(0,0,0)';
-    this.svgElement.style.contentVisibility = this.renderConfig.contentVisibility;
+    this.svgElement.setAttribute("width", animData.w);
+    this.svgElement.setAttribute("height", animData.h);
+    this.svgElement.style.width = "100%";
+    this.svgElement.style.height = "100%";
+    this.svgElement.style.transform = "translate3d(0,0,0)";
+    this.svgElement.style.contentVisibility =
+      this.renderConfig.contentVisibility;
   }
   if (this.renderConfig.width) {
-    this.svgElement.setAttribute('width', this.renderConfig.width);
+    this.svgElement.setAttribute("width", this.renderConfig.width);
   }
   if (this.renderConfig.height) {
-    this.svgElement.setAttribute('height', this.renderConfig.height);
+    this.svgElement.setAttribute("height", this.renderConfig.height);
   }
   if (this.renderConfig.className) {
-    this.svgElement.setAttribute('class', this.renderConfig.className);
+    this.svgElement.setAttribute("class", this.renderConfig.className);
   }
   if (this.renderConfig.id) {
-    this.svgElement.setAttribute('id', this.renderConfig.id);
+    this.svgElement.setAttribute("id", this.renderConfig.id);
   }
   if (this.renderConfig.focusable !== undefined) {
-    this.svgElement.setAttribute('focusable', this.renderConfig.focusable);
+    this.svgElement.setAttribute("focusable", this.renderConfig.focusable);
   }
-  this.svgElement.setAttribute('preserveAspectRatio', this.renderConfig.preserveAspectRatio);
+  this.svgElement.setAttribute(
+    "preserveAspectRatio",
+    this.renderConfig.preserveAspectRatio
+  );
   // this.layerElement.style.transform = 'translate3d(0,0,0)';
   // this.layerElement.style.transformOrigin = this.layerElement.style.mozTransformOrigin = this.layerElement.style.webkitTransformOrigin = this.layerElement.style['-webkit-transform'] = "0px 0px 0px";
   this.animationItem.wrapper.appendChild(this.svgElement);
@@ -85,16 +84,19 @@ SVGRendererBase.prototype.configAnimation = function (animData) {
   this.globalData.progressiveLoad = this.renderConfig.progressiveLoad;
   this.data = animData;
 
-  var maskElement = createNS('clipPath');
-  var rect = createNS('rect');
-  rect.setAttribute('width', animData.w);
-  rect.setAttribute('height', animData.h);
-  rect.setAttribute('x', 0);
-  rect.setAttribute('y', 0);
+  var maskElement = createNS("clipPath");
+  var rect = createNS("rect");
+  rect.setAttribute("width", animData.w);
+  rect.setAttribute("height", animData.h);
+  rect.setAttribute("x", 0);
+  rect.setAttribute("y", 0);
   var maskId = createElementID();
-  maskElement.setAttribute('id', maskId);
+  maskElement.setAttribute("id", maskId);
   maskElement.appendChild(rect);
-  this.layerElement.setAttribute('clip-path', 'url(' + getLocationHref() + '#' + maskId + ')');
+  this.layerElement.setAttribute(
+    "clip-path",
+    "url(" + getLocationHref() + "#" + maskId + ")"
+  );
 
   defs.appendChild(maskElement);
   this.layers = animData.layers;
@@ -103,7 +105,7 @@ SVGRendererBase.prototype.configAnimation = function (animData) {
 
 SVGRendererBase.prototype.destroy = function () {
   if (this.animationItem.wrapper) {
-    this.animationItem.wrapper.innerText = '';
+    this.animationItem.wrapper.innerText = "";
   }
   this.layerElement = null;
   this.globalData.defs = null;
@@ -119,8 +121,7 @@ SVGRendererBase.prototype.destroy = function () {
   this.animationItem = null;
 };
 
-SVGRendererBase.prototype.updateContainerSize = function () {
-};
+SVGRendererBase.prototype.updateContainerSize = function () {};
 
 SVGRendererBase.prototype.findIndexByInd = function (ind) {
   var i = 0;
@@ -150,9 +151,10 @@ SVGRendererBase.prototype.buildItem = function (pos) {
   }
   this.appendElementInPos(element, pos);
   if (this.layers[pos].tt) {
-    var elementIndex = ('tp' in this.layers[pos])
-      ? this.findIndexByInd(this.layers[pos].tp)
-      : pos - 1;
+    var elementIndex =
+      "tp" in this.layers[pos]
+        ? this.findIndexByInd(this.layers[pos].tp)
+        : pos - 1;
     if (elementIndex === -1) {
       return;
     }
@@ -176,9 +178,8 @@ SVGRendererBase.prototype.checkPendingElements = function () {
       var len = this.elements.length;
       while (i < len) {
         if (this.elements[i] === element) {
-          var elementIndex = 'tp' in element.data
-            ? this.findIndexByInd(element.data.tp)
-            : i - 1;
+          var elementIndex =
+            "tp" in element.data ? this.findIndexByInd(element.data.tp) : i - 1;
           var matteElement = this.elements[elementIndex];
           var matteMask = matteElement.getMatte(this.layers[i].tt);
           element.setMatte(matteMask);
@@ -232,7 +233,11 @@ SVGRendererBase.prototype.appendElementInPos = function (element, pos) {
   var i = 0;
   var nextElement;
   while (i < pos) {
-    if (this.elements[i] && this.elements[i] !== true && this.elements[i].getBaseElement()) {
+    if (
+      this.elements[i] &&
+      this.elements[i] !== true &&
+      this.elements[i].getBaseElement()
+    ) {
       nextElement = this.elements[i].getBaseElement();
     }
     i += 1;
@@ -245,11 +250,11 @@ SVGRendererBase.prototype.appendElementInPos = function (element, pos) {
 };
 
 SVGRendererBase.prototype.hide = function () {
-  this.layerElement.style.display = 'none';
+  this.layerElement.style.display = "none";
 };
 
 SVGRendererBase.prototype.show = function () {
-  this.layerElement.style.display = 'block';
+  this.layerElement.style.display = "block";
 };
 
 export default SVGRendererBase;

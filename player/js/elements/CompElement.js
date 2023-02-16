@@ -1,15 +1,22 @@
-import {
-  extendPrototype,
-} from '../utils/functionExtensions';
-import BaseElement from './BaseElement';
-import TransformElement from './helpers/TransformElement';
-import HierarchyElement from './helpers/HierarchyElement';
-import FrameElement from './helpers/FrameElement';
-import RenderableDOMElement from './helpers/RenderableDOMElement';
+import { extendPrototype } from "../utils/functionExtensions";
+import BaseElement from "./BaseElement";
+import FrameElement from "./helpers/FrameElement";
+import HierarchyElement from "./helpers/HierarchyElement";
+import RenderableDOMElement from "./helpers/RenderableDOMElement";
+import TransformElement from "./helpers/TransformElement";
 
 function ICompElement() {}
 
-extendPrototype([BaseElement, TransformElement, HierarchyElement, FrameElement, RenderableDOMElement], ICompElement);
+extendPrototype(
+  [
+    BaseElement,
+    TransformElement,
+    HierarchyElement,
+    FrameElement,
+    RenderableDOMElement,
+  ],
+  ICompElement
+);
 
 ICompElement.prototype.initElement = function (data, globalData, comp) {
   this.initFrame();

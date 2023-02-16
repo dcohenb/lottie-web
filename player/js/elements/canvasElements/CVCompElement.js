@@ -1,13 +1,9 @@
-import {
-  extendPrototype,
-} from '../../utils/functionExtensions';
-import {
-  createSizedArray,
-} from '../../utils/helpers/arrays';
-import PropertyFactory from '../../utils/PropertyFactory';
-import CanvasRendererBase from '../../renderers/CanvasRendererBase';
-import CVBaseElement from './CVBaseElement';
-import ICompElement from '../CompElement';
+import CanvasRendererBase from "../../renderers/CanvasRendererBase";
+import { extendPrototype } from "../../utils/functionExtensions";
+import { createSizedArray } from "../../utils/helpers/arrays";
+import PropertyFactory from "../../utils/PropertyFactory";
+import ICompElement from "../CompElement";
+import CVBaseElement from "./CVBaseElement";
 
 function CVCompElement(data, globalData, comp) {
   this.completeLayers = false;
@@ -15,10 +11,15 @@ function CVCompElement(data, globalData, comp) {
   this.pendingElements = [];
   this.elements = createSizedArray(this.layers.length);
   this.initElement(data, globalData, comp);
-  this.tm = data.tm ? PropertyFactory.getProp(this, data.tm, 0, globalData.frameRate, this) : { _placeholder: true };
+  this.tm = data.tm
+    ? PropertyFactory.getProp(this, data.tm, 0, globalData.frameRate, this)
+    : { _placeholder: true };
 }
 
-extendPrototype([CanvasRendererBase, ICompElement, CVBaseElement], CVCompElement);
+extendPrototype(
+  [CanvasRendererBase, ICompElement, CVBaseElement],
+  CVCompElement
+);
 
 CVCompElement.prototype.renderInnerContent = function () {
   var ctx = this.canvasContext;
@@ -42,7 +43,7 @@ CVCompElement.prototype.destroy = function () {
   var i;
   var len = this.layers.length;
   for (i = len - 1; i >= 0; i -= 1) {
-    if (this.elements[i]) {
+    if (this.elements[i] && this.elements[i].destroy) {
       this.elements[i].destroy();
     }
   }
